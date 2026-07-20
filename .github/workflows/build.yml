@@ -1,0 +1,41 @@
+name: Build RecafMCP Plugin Jar
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch: # 支持手动点击在线构建
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取源码
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 2. 配置JDK23（兼容22/25）
+      - name: Setup JDK 23
+        uses: actions/setup-java@v4
+        with:
+          java-version: 23
+          distribution: temurin
+          cache: gradle
+
+      # 3. 自动下载Recaf4 recaf.jar到libs目录（解决在线构建缺失依赖）
+      - name: Download Recaf dependency jar
+        run: |
+          mkdir -p recaf-mcp-plugin/libs
+          # 替换为最新Recaf4 snapshot下载地址，这里用官方示例链接
+          wget -O recaf-mcp-plugin/libs/recaf.jar https://github.com/Col-E/Recaf/releases/download/4.0.0-alpha/recaf-4x-alpha-win-86-x64.jar
+
+      # 4. Gradle打包shadowJar（完整依赖插件包）
+      - name: Build shadowJar
+        working-directory: ./recaf-mcp-plugin
+        run: ./gradlew shadowJar --stacktrace
+
+      # 5. 上传生成的Jar到构建产物，在线下载
+      - name: Upload Jar Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RecafMCP-Plugin-Jar
+          path: recaf-mcp-plugin/build/libs/*.jar
