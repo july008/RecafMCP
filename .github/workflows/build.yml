@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v4
 
       # 2. 配置JDK23（兼容22/25）
-      - name: Setup JDK 23
+      - name: Setup JDK 22
         uses: actions/setup-java@v4
         with:
-          java-version: 23
+          java-version: 22
           distribution: temurin
           cache: gradle
 
