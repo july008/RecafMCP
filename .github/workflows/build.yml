@@ -23,7 +23,7 @@ jobs:
       - name: Prepare recaf.jar dependency
         run: |
           mkdir -p recaf-mcp-plugin/libs
-          wget -O recaf-mcp-plugin/libs/recaf.jar https://github.com/Col-E/Recaf/releases/download/v4.0.0-SNAPSHOT/recaf.jar
+          wget -O recaf-mcp-plugin/libs/recaf.jar https://github.com/Col-E/Recaf/releases/download/4.0.0-alpha/recaf-4x-alpha-win-86-x64.jar
 
       # 不切换子目录，在仓库根目录执行gradle，指定子项目打包
       - name: Build shadowJar
