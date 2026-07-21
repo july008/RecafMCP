@@ -22,16 +22,16 @@ jobs:
       # 创建libs目录并下载recaf依赖
       - name: Prepare recaf.jar dependency
         run: |
-          mkdir -p recaf-mcp-plugin/libs
-          wget -O recaf-mcp-plugin/libs/recaf.jar https://github.com/Col-E/Recaf/releases/download/4.0.0-alpha/recaf-4x-alpha-win-86-x64.jar
+          mkdir -p libs
+          wget -O libs/recaf.jar https://github.com/Col-E/Recaf/releases/download/4.0.0-alpha/recaf-4x-alpha-win-86-x64.jar
 
       # 不切换子目录，在仓库根目录执行gradle，指定子项目打包
       - name: Build shadowJar
-        run: ./gradlew :recaf-mcp-plugin:shadowJar --stacktrace
+        run: ./gradlew shadowJar --stacktrace
 
       # 上传产物
       - name: Upload Jar Artifact
         uses: actions/upload-artifact@v4
         with:
           name: RecafMCP-Plugin-Jar
-          path: recaf-mcp-plugin/build/libs/*.jar
+          path: build/libs/*.jar
